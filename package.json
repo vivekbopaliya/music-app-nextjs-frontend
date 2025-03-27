@@ -6,10 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "playwright test ./src/tests/index.spec.ts",
+    "test:ui": "playwright test ./src/tests/index.spec.ts --ui",
+    "test:headed": "playwright test ./src/tests/index.spec.ts --headed"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
+    "@playwright/test": "^1.51.1",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-dialog": "^1.1.6",
     "@radix-ui/react-dropdown-menu": "^2.0.6",

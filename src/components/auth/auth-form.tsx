@@ -59,6 +59,7 @@ export function AuthForm() {
         email: values.email,
         password: values.password,
       });
+      switchAuthMode();
     }
   }
 

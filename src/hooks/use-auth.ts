@@ -1,8 +1,9 @@
-import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
+import { useMutation } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
-const API_URL = 'http://localhost:4000';
+const API_URL = "http://localhost:4000";
 
 interface AuthCredentials {
   email: string;
@@ -15,15 +16,23 @@ export const useLogin = () => {
 
   return useMutation({
     mutationFn: async (credentials: AuthCredentials) => {
-      const { data } = await axios.post(
-        `${API_URL}/auth/login`,
-        credentials,
-        { withCredentials: true }
-      );
+      const { data } = await axios.post(`${API_URL}/auth/login`, credentials, {
+        withCredentials: true,
+      });
       return data;
     },
     onSuccess: () => {
-      router.push('/dashboard');
+      toast.success("Logged in successfully");
+      router.push("/dashboard");
+    },
+    onError: (error: AxiosError) => {
+      if (error.response?.status === 401) {
+        return toast.error("Invalid credentials");
+      }
+      if(error.response?.status === 400) {
+        return toast.error("Invalid data passed in backend");
+      }
+      return toast.error("Something went wrong on server side, pleae try again later");
     },
   });
 };
@@ -41,7 +50,16 @@ export const useRegister = () => {
       return data;
     },
     onSuccess: () => {
-      router.push('/login');
+      toast.success("Registered successfully");
+    },
+    onError: (error: AxiosError) => {
+      if (error.response?.status === 401) {
+        return toast.error("This email is already taken");
+      }
+      if(error.response?.status === 400) {
+        return toast.error("Invalid data passed in backend");
+      }
+      return toast.error("Something went wrong on server side, pleae try again later");
     },
   });
 };
@@ -59,7 +77,14 @@ export const useLogout = () => {
       return data;
     },
     onSuccess: () => {
-      router.push('/');
+      router.push("/");
+      toast.success("Logged out successfully");
+    },
+    onError: (error: AxiosError) => {
+      if (error.response?.status === 401) {
+        return toast.error("You are not logged in");
+      }
+      return toast.error("Something went wrong on server side, pleae try again later");
     },
   });
 };

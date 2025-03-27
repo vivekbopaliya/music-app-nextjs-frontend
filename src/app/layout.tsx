@@ -1,11 +1,11 @@
-import type { Metadata } from 'next';
-import './globals.css';
-import { Providers } from '@/providers/default-provider';
-
+import type { Metadata } from "next";
+import "./globals.css";
+import { Providers } from "@/providers/default-provider";
+import { Toaster } from 'react-hot-toast';
 
 export const metadata: Metadata = {
-  title: 'Music App',
-  description: 'Your favorite music app',
+  title: "Music App",
+  description: "Your favorite music app",
 };
 
 export default function RootLayout({
@@ -15,9 +15,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body >
+      <body>
         <Providers>
           {children}
+          <Toaster />
         </Providers>
       </body>
     </html>
